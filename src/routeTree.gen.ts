@@ -9,21 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as NewsRouteImport } from './routes/news'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as NewsIdRouteImport } from './routes/news.$id'
 import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminJourneysRouteImport } from './routes/admin.journeys'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NewsIdRoute = NewsIdRouteImport.update({
-  id: '/news/$id',
-  path: '/news/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminNewsRoute = AdminNewsRouteImport.update({
@@ -49,79 +49,79 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/news': typeof NewsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/journeys': typeof AdminJourneysRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
-  '/news/$id': typeof NewsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/news': typeof NewsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/journeys': typeof AdminJourneysRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
-  '/news/$id': typeof NewsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/news': typeof NewsRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/journeys': typeof AdminJourneysRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
-  '/news/$id': typeof NewsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/news'
     | '/admin/dashboard'
     | '/admin/journeys'
     | '/admin/login'
     | '/admin/news'
-    | '/news/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/news'
     | '/admin/dashboard'
     | '/admin/journeys'
     | '/admin/login'
     | '/admin/news'
-    | '/news/$id'
   id:
     | '__root__'
     | '/'
+    | '/news'
     | '/admin/dashboard'
     | '/admin/journeys'
     | '/admin/login'
     | '/admin/news'
-    | '/news/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  NewsRoute: typeof NewsRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminJourneysRoute: typeof AdminJourneysRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminNewsRoute: typeof AdminNewsRoute
-  NewsIdRoute: typeof NewsIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/news/$id': {
-      id: '/news/$id'
-      path: '/news/$id'
-      fullPath: '/news/$id'
-      preLoaderRoute: typeof NewsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/news': {
@@ -157,11 +157,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  NewsRoute: NewsRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminJourneysRoute: AdminJourneysRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminNewsRoute: AdminNewsRoute,
-  NewsIdRoute: NewsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

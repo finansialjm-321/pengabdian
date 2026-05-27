@@ -23,7 +23,7 @@ interface RelatedNewsItem {
   news_date: string;
 }
 
-export const Route = createFileRoute("/news/$id")({
+export const Route = createFileRoute("/news")({
   component: NewsDetailPage,
 });
 
